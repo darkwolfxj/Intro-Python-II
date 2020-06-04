@@ -55,13 +55,13 @@ class Adv:
             sleep(1)
             direction = input("Enter a direction in which to move: ")
         
-            if direction == 'north' or direction == 'North' or direction == 'NORTH':
+            if direction == 'north' or direction == 'North' or direction == 'NORTH' or direction == 'n' or direction == 'N':
                 direction = 'n_to'
-            elif direction == 'south' or direction == 'South' or direction == 'SOUTH':
+            elif direction == 'south' or direction == 'South' or direction == 'SOUTH' or direction == 's' or direction == 'S':
                 direction = 's_to'
-            elif direction == 'west' or direction == 'West' or direction == 'WEST':
+            elif direction == 'west' or direction == 'West' or direction == 'WEST' or direction == 'w' or direction == 'W':
                 direction = 'w_to'
-            elif direction == 'east' or direction == 'East' or direction == 'EAST':
+            elif direction == 'east' or direction == 'East' or direction == 'EAST' or direction == 'e' or direction == 'E':
                 direction = 'e_to'
             else:
                 print("That's not a valid direction.")
