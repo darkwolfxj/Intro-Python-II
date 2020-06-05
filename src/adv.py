@@ -13,9 +13,8 @@ room = {
 
     'narrow':   Room("Narrow Passage", "The narrow passage bends here from west to north. The smell of gold permeates the air.", []),
 
-    'treasure': Room("Treasure Chamber", "You've found the long-lost treasure chamber! Sadly, it has already been completely emptied by earlier adventurers. The only exit is to the south.", []),
+    'treasure': Room("Treasure Chamber", "You've found the long-lost treasure chamber! Sadly, it has already been completely emptied by earlier adventurers. The only exit is to the south.", [Item('Treasure', "You found the Treasure! This is the treasure that has been hidden in this cave for centuries.", 10000)]),
 }
-
 
 # Link rooms together
 
@@ -51,33 +50,72 @@ class Adv:
         game_over = False
         player = Player(current_room)
         while game_over is not True:
+            current_items = current_room.currentItems()
             sleep(1)
             command = input("Enter a command in which to move (n, s, e, or w) or look with 'look', enter q to end the game: \n")
             split_command = command.split(" ")
-            try: 
+            
+            try:   
                 if 'n' in split_command or 's' in split_command or 'e' in split_command or 'w' in split_command:
-                    current_room = getattr(current_room, command.split(" ")[1])
-                    player.currentRoom = current_room
-                    print(player)
+                    def conditional():
+                        if len(command.split(" ")) > 1:
+                            return command.split(" ")[1]
+                        else: 
+                            return str(command)
+                    try:
+                        current_room = getattr(current_room, conditional())
+                    except:
+                        print("Can't go that way, right now.")    
+                    print(current_room)
+                elif 'at' in split_command and len(split_command) > 2:
+                    for item in current_items:
+                        if str(item) == str(split_command[2]):
+                            item.look()
+                        else:
+                            pass
                 elif 'look' in split_command:
                     current_room.look()
                     sleep(1)
-                    print(player.current_room)
+                    print(current_room)
                 elif 'get' in split_command:
-                    player.inventory.append(split_command(" ")[1])
-                    print("Trying to get item")
+                    current_item = command.split(" ")[1]
+                    if current_item == 'Treasure':
+                        print("Congratulations! You Win!") 
+                        game_over = True
+                        break
+                    truthfinder = []
+                    alreadyhave = []
+                    for item in current_items:
+                        if str(current_item) == str(item):
+                            for item in player.inventory:
+                                if str(current_item) == str(item):
+                                   alreadyhave.append(True)
+                                else:
+                                    alreadyhave.append(False)
+                            if True in alreadyhave:
+                                print("You already have that item.")
+                                break
+                            truthfinder.append(True)
+                        else:
+                            truthfinder.append(False)
+                    if True in truthfinder:
+                        player.inventory.append(current_item)
+                        print(f"Got {current_item}")
+                        sleep(1)
+                        print(current_room)
+                    else:
+                        print("That item isn't in this room.")  
+                        sleep(1)
+                        print(current_room)      
                 elif 'inventory' in split_command:
-                    print("Looking at inventory")
-                    print(player.inventory)
+                    player.check_inventory()
+                elif 'drop' in split_command:
+                    current_items.append(player.inventory.pop(player.inventory.index(current_item)))
+                    print(f"Dropped {current_item}")
                 elif 'q' in split_command:
                     print("Thank you for playing!")
                     sleep(1)
                     break
-                if current_room == room['treasure'] and 'Treasure' in player.inventory():
-                    sleep(5)
-                    print("Congratulations! You Win!")
-                    game_over = True
             except:
                 pass
-                # print("Can't go that direction, right now.")
 instance = Adv()

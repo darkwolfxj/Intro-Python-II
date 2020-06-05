@@ -4,6 +4,7 @@ class Item:
         self.value = value
         self.description = description
     def look(self):
-        print(f"This is a {self.name}. {description} It's worth {self.value} points!")
+        print(f"This is a {self.name}. {self.description} It's worth {self.value} points!")
     def __repr__(self):
-        return f"{self.name}"
+        name = str(self.name)
+        return name

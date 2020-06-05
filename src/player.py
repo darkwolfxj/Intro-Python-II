@@ -5,12 +5,11 @@ from room import Room
 class Player():
     def __init__(self, currentRoom):
         self.currentRoom = currentRoom
-        self.inventory = ['test']
+        self.inventory = []
         print(currentRoom)
-    def __repr__(self):
-        return f"{self.currentRoom}"
     def check_inventory(self):
         if len(self.inventory) > 0:
+            print("You have: ")
             for item in self.inventory:
                 print(item)
         else:
